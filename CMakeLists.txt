@@ -26,12 +26,11 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE
-  "c:/Users/schwarztoter/projects/c++/sigscanner/src/"
   "includes/"
   "src/"
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
-  "c:/Users/schwarztoter/projects/c++/sigscanner/build/Release/sigscanner.lib"
+  "${CMAKE_SOURCE_DIR}/libs/sigscanner.lib"
   "${CMAKE_SOURCE_DIR}/libs/libMinHook.x64.lib"
 )
