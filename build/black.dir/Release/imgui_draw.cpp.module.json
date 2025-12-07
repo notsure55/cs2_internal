@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "black.dir\\Release\\imgui_draw.obj",
+            "outputs": [
+                "black.dir\\Release\\"
+            ],
+            "requires": []
+        }
+    ]
+}

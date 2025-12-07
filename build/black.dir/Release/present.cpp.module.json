@@ -1,0 +1,13 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "black.dir\\Release\\present.obj",
+            "outputs": [
+                "black.dir\\Release\\"
+            ],
+            "requires": []
+        }
+    ]
+}
