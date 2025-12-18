@@ -3,6 +3,24 @@
 #include <globals/globals.h>
 
 namespace Math {
+    constexpr float PI { 3.14 };
+
+    float radians_to_degrees(const float& angle) {
+        return angle * 180.0 / PI;
+    }
+
+    const ImVec2* calculate_angle(const Vec3* origin, const Vec3* target) {
+        ImVec2* angles { new ImVec2 };
+        const float yaw_angle = std::atan2f(target->y - origin->y, target->x - origin->x);
+        angles->y = radians_to_degrees(yaw_angle);
+
+        const float distance = (target->z - origin->z) / (*origin - *target).magnitude();
+        const float pitch_angle = -(std::asinf(distance));
+        angles->x = radians_to_degrees(pitch_angle);
+
+        return angles;
+    }
+
     bool wts(const Vec3* in, ImVec2& out) {
         const auto screen_size = Menu::get_screen_size();
         const auto z = Globals::view_matrix->v[3][0] * in->x + Globals::view_matrix->v[3][1] * in->y

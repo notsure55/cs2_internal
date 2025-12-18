@@ -2,6 +2,7 @@
 
 #include <utility/utility.h>
 #include <imgui/imgui.h>
+#include <cmath>
 
 namespace Math {
 
@@ -33,9 +34,10 @@ namespace Math {
         }
 
         float magnitude() {
-            return (this->x * this->x) + (this->y * this->y) + (this->z * this->z);
+            return std::sqrtf((this->x * this->x) + (this->y * this->y) + (this->z * this->z));
         }
     };
 
+    const ImVec2* calculate_angle(const Vec3* origin, const Vec3* target);
     bool wts(const Vec3* in, ImVec2& out);
 }

@@ -1,8 +1,10 @@
 #include <aimbot/aimbot.h>
 #include <globals/globals.h>
 #include <offsets/skeletons.h>
+#include <imgui/imgui.h>
 
 namespace Aimbot {
+
     void run() {
         for (auto* entity: Globals::entity_system->get_entities()) {
             if (entity == nullptr) { continue; }
@@ -14,6 +16,8 @@ namespace Aimbot {
 
             const auto head { pawn->get_bone(Skeletons::CT::BONES::head) };
             const auto local_head { Globals::entity_system->get_pawn(Globals::local_player)->get_bone(Skeletons::CT::BONES::head) };
+            const auto angles { calculate_angle(local_head, head) };
+            *Globals::view_angles = *angles;
         }
     }
 }

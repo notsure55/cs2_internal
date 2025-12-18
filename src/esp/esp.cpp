@@ -14,7 +14,7 @@ namespace Esp {
         const auto skeletons { *reinterpret_cast<uintptr_t*>(game_scene + 0x290) };
         std::vector<Math::Vec3*> bones;
         bones.reserve(131);
-        for (size_t i{0}; i < 130; ++i) {
+        for (size_t i{0}; i < 123; ++i) {
             bones.push_back(reinterpret_cast<Math::Vec3*>(skeletons + i * 0x20));
         }
         size_t i {0};
@@ -113,7 +113,7 @@ namespace Esp {
     }
 
     float calc_dist(Math::Vec3* origin, Math::Vec3* target) {
-        return std::sqrtf((*origin - *target).magnitude());
+        return (*origin - *target).magnitude();
     }
 
     void names(Entities::CPlayerController* player) {
@@ -121,7 +121,6 @@ namespace Esp {
         const auto local_player_pos { Globals::entity_system->get_pawn(Globals::local_player)->get_pos().first };
         const auto dist { calc_dist(local_player_pos, pos.first)};
         //std::println("LOCAL_PLAYER_POS: X: {} Y: {} Z: {}", local_player_pos->x, local_player_pos->y, local_player_pos->z);
-        std::println("DISTANCE: {}", dist);
 
         ImVec2 head_wts {};
         ImVec2 feet_wts {};
