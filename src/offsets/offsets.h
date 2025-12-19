@@ -4,6 +4,7 @@ namespace Offsets {
     namespace Client {
         constexpr std::ptrdiff_t dwViewMatrix = 0x1E323D0;
         constexpr std::ptrdiff_t dwViewAngles = 0x1E3C800;
+        constexpr std::ptrdiff_t dwGameEntitySystem_highestEntityIndex = 0x20F0;
         namespace CBasePlayerController {
             constexpr std::ptrdiff_t m_CommandContext = 0x600; // C_CommandContext
             constexpr std::ptrdiff_t m_nInButtonsWhichAreToggles = 0x6A8; // uint64

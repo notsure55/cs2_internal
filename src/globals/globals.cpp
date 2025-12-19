@@ -17,7 +17,7 @@ namespace Globals {
         inventory_mgr = Inventory::init(mgr);
         const auto client { cast_ptr(GetModuleHandleW(L"client.dll")) };
         entity_system = mgr->get_class<Entities::CGameEntitySystem>("CGameEntitySystem");
-        //local_player = entity_system->get_player(1);
+        local_player = entity_system->get_player(1);
         view_matrix = reinterpret_cast<Math::Matrix*>(client + Offsets::Client::dwViewMatrix);
         view_angles = reinterpret_cast<ImVec2*>(client + Offsets::Client::dwViewAngles);
     }

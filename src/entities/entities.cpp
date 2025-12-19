@@ -4,6 +4,7 @@
 namespace Entities {
     GetPlayer_t getplayer { nullptr };
     GetPawn_t getpawn { nullptr };
+    GetPlayer_t getentity { nullptr };
 
     void init(SigManager* mgr) {
         getplayer = mgr->get<GetPlayer_t>("get_player_controller");
@@ -16,6 +17,10 @@ namespace Entities {
 
     CPlayerPawn* CGameEntitySystem::get_pawn(CPlayerController* player) {
         return getpawn(player);
+    }
+
+    uint32_t CGameEntitySystem::get_entity_count() {
+        return *reinterpret_cast<uint32_t*>(cast_ptr(this) + Offsets::Client::dwGameEntitySystem_highestEntityIndex);
     }
 
     std::vector<CPlayerController*> CGameEntitySystem::get_entities() {

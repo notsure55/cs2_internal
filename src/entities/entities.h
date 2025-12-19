@@ -38,11 +38,16 @@ namespace Entities {
         }
     };
 
+    class CBaseEntity {
+    };
+
     class CGameEntitySystem {
     public:
 
         CPlayerController* get_player(uint32_t index);
         CPlayerPawn* get_pawn(CPlayerController* player);
+        CBaseEntity* get_entity(uint32_t index);
+        uint32_t get_entity_count();
         std::vector<CPlayerController*> get_entities();
     };
 

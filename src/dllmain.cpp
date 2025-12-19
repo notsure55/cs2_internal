@@ -24,33 +24,16 @@ DWORD WINAPI entry_point(LPVOID hModule) {
             break;
         }
         if (GetAsyncKeyState(VK_XBUTTON2)) {
-            /*for (const auto& item: Globals::inventory_mgr->get_player_inv()->get_items()) {
-                //std::println("ADDRESS: {:X} NAME: INVALID", cast_ptr(item));
-                const auto name { item->get_name() };
-                if (name != nullptr) {
-                    std::println("ADDRESS: {:X} NAME: {}", cast_ptr(item), item->get_name());
-                } else {
-                    std::println("ADDRESS: {:X} NAME: INVALID", cast_ptr(item));
-                }
-            }*/
-
             Aimbot::run();
         }
 
-        std::println("INVENTORY: {:X} PLAYER_INVENTORY: {:X}", cast_ptr(Globals::inventory_mgr), cast_ptr(Globals::inventory_mgr->get_player_inv()));
-        auto inv { Globals::inventory_mgr->get_player_inv()->get_items() };
-
-        for (int i{0}; i < inv.count; ++i) {
-            std::println("ADDRESS: {:X} NAME: {}", cast_ptr(inv.items[i]), inv.items[i]->get_name());
-        }
-        /*for (uint32_t i{1}; i < 64; ++i) {
-            auto* player =  Globals::entity_system->get_player(i);
-            if (player != nullptr) {
-                std::println("CONTROLLER: {:X} NAME: {}", cast_ptr(player), player->get_name());
-                std::println("PAWN: {:X}", cast_ptr(Globals::entity_system->get_pawn(player)));
+        for (uint32_t i{0}; i < Globals::entity_system->get_entity_count() * 3; ++i) {
+            auto* entity =  Globals::entity_system->get_player(i);
+            if (entity != nullptr) {
+                std::println("Entity: {:X}, Class Name: {}", cast_ptr(entity), Utility::get_class_name(entity));
             }
+        }
 
-        }*/
         Sleep(1000);
     }
 
