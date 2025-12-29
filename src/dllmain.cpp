@@ -30,7 +30,10 @@ DWORD WINAPI entry_point(LPVOID hModule) {
         for (uint32_t i{0}; i < Globals::entity_system->get_entity_count() * 3; ++i) {
             auto* entity =  Globals::entity_system->get_player(i);
             if (entity != nullptr) {
-                std::println("Entity: {:X}, Class Name: {}", cast_ptr(entity), Utility::get_class_name(entity));
+                const auto name { Utility::get_class_name(entity) };
+                if (std::strcmp("C_BaseModelEntity@@", name) != 0) {
+                    std::println("Entity: {:X}, Class Name: {}", cast_ptr(entity), name);
+                }
             }
         }
 
