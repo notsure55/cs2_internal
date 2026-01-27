@@ -6,7 +6,7 @@
 namespace Aimbot {
 
     void run() {
-        for (auto* entity: Globals::entity_system->get_entities()) {
+        for (auto* entity: Globals::entity_system->get_players()) {
             if (entity == nullptr) { continue; }
 
             auto* pawn { Globals::entity_system->get_pawn(entity) };

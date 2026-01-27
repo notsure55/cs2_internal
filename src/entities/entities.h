@@ -9,6 +9,36 @@
 #include <offsets/skeletons.h>
 
 namespace Entities {
+    class CWeapon {
+    };
+
+    class CBaseEntity {
+    };
+    enum EntityType {
+        PLAYER,
+        WEAPON,
+        BASIC,
+    };
+
+    class Entity {
+    private:
+        // const const, because this is a points to const memory and cant be reassigned.
+        CBaseEntity* entity;
+        const EntityType type;
+
+    public:
+        Entity(CBaseEntity* e, const EntityType t) : entity(e), type(t) {}
+
+        template <typename T>
+        T* get_entity() const {
+            return reinterpret_cast<T*>(entity);
+        }
+
+        const EntityType& get_type() const {
+            return type;
+        }
+    };
+
     // CBasePlayerController
     class CPlayerController {
     public:
@@ -38,20 +68,17 @@ namespace Entities {
         }
     };
 
-    class CBaseEntity {
-    };
-
     class CGameEntitySystem {
     public:
 
-        CPlayerController* get_player(uint32_t index);
         CPlayerPawn* get_pawn(CPlayerController* player);
         CBaseEntity* get_entity(uint32_t index);
         uint32_t get_entity_count();
-        std::vector<CPlayerController*> get_entities();
+        std::vector<CPlayerController*> get_players();
+        std::vector<std::unique_ptr<Entity>> get_entities();
     };
 
-    using GetPlayer_t = CPlayerController*(*)(CGameEntitySystem*, uint32_t);
+    using GetEntity_t = CBaseEntity*(*)(CGameEntitySystem*, uint32_t);
     using GetPawn_t = CPlayerPawn*(*)(void*);
 
     void init(SigManager* mgr);

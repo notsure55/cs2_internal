@@ -27,14 +27,9 @@ DWORD WINAPI entry_point(LPVOID hModule) {
             Aimbot::run();
         }
 
-        for (uint32_t i{0}; i < Globals::entity_system->get_entity_count() * 3; ++i) {
-            auto* entity =  Globals::entity_system->get_player(i);
-            if (entity != nullptr) {
-                const auto name { Utility::get_class_name(entity) };
-                if (std::strcmp("C_BaseModelEntity@@", name) != 0) {
-                    std::println("Entity: {:X}, Class Name: {}", cast_ptr(entity), name);
-                }
-            }
+        for (const auto& entity: Globals::entity_system->get_entities()) {
+            const auto name { Utility::get_class_name(entity->get_entity<void>()) };
+            std::println("NAME = {}", name);
         }
 
         Sleep(1000);

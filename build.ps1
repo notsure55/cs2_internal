@@ -9,7 +9,7 @@ Set-Location build
 if (-not (Test-Path CMakeCache.txt))
 {
     # build cmake files
-    cmake -G "Visual Studio 17 2022" -A x64 ..
+    cmake -G "Visual Studio 18 2026" -A x64 ..
 }
 
 # build project
