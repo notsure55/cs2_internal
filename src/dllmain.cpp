@@ -28,11 +28,12 @@ DWORD WINAPI entry_point(LPVOID hModule) {
         }
 
         for (const auto& entity: Globals::entity_system->get_entities()) {
-            const auto name { Utility::get_class_name(entity->get_entity<void>()) };
-            std::println("NAME = {}", name);
+            auto e = entity->get_entity<void>();
+            const auto name { Utility::get_class_name(e) };
+            std::println("{:X} NAME = {}", cast_ptr(e), name);
         }
 
-        Sleep(1000);
+        Sleep(5);
     }
 
     Hooks::disable();

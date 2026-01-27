@@ -33,8 +33,8 @@ namespace Math {
             return *this;
         }
 
-        float magnitude() {
-            return std::sqrtf((this->x * this->x) + (this->y * this->y) + (this->z * this->z));
+        float magnitude() const {
+            return std::sqrtf((x * x) + (y * y) + (z * z));
         }
     };
 

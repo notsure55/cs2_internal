@@ -6,6 +6,7 @@
 #include <cmath>
 #include <toggles/toggles.h>
 #include <math/math.h>
+#include <algorithm>
 
 namespace Esp {
 
@@ -59,8 +60,8 @@ namespace Esp {
         }
     }
 
-    void boxes(Entities::CPlayerPawn* pawn) {
-        const auto pos { pawn->get_pos() }; // head and feet :P
+    void boxes(std::unique_ptr<Entities::Entity>& e) {
+        const auto pos { e->get_pos() }; // head and feet :P
 
         ImVec2 head_wts {};
         ImVec2 feet_wts {};
@@ -72,10 +73,12 @@ namespace Esp {
             return;
         }
 
-        const auto length_scalar { (feet_wts.y - head_wts.y) / 2.0 };
-        feet_wts.x -= (length_scalar * 0.4);
-        head_wts.x += (length_scalar * 0.4);
-        head_wts.y -= (length_scalar * 0.2);
+        if (e->get_type() == Entities::EntityType::PLAYER) {
+            const auto length_scalar { (feet_wts.y - head_wts.y) / 2.0 };
+            feet_wts.x -= (length_scalar * 0.4);
+            head_wts.x += (length_scalar * 0.4);
+            head_wts.y -= (length_scalar * 0.2);
+        }
 
         ImGui::GetBackgroundDrawList()->AddRect(
             head_wts,
@@ -116,10 +119,10 @@ namespace Esp {
         return (*origin - *target).magnitude();
     }
 
-    void names(Entities::CPlayerController* player) {
-        const auto pos { Globals::entity_system->get_pawn(player)->get_pos() };
+    void names(std::unique_ptr<Entities::Entity>& e) {
+        const auto pos { e->get_pos() };
         const auto local_player_pos { Globals::entity_system->get_pawn(Globals::local_player)->get_pos().first };
-        const auto dist { calc_dist(local_player_pos, pos.first)};
+        const float dist { calc_dist(local_player_pos, pos.first)};
         //std::println("LOCAL_PLAYER_POS: X: {} Y: {} Z: {}", local_player_pos->x, local_player_pos->y, local_player_pos->z);
 
         ImVec2 head_wts {};
@@ -131,40 +134,45 @@ namespace Esp {
         if (!Math::wts(pos.second, feet_wts)) {
             return;
         }
-
-        const auto length_scalar { (feet_wts.y - head_wts.y) / 2.0 };
-
-        head_wts.x -= (length_scalar * 0.42);
-        head_wts.y -= (length_scalar * 0.3);
+        if (e->get_type() == Entities::EntityType::PLAYER) {
+            const auto length_scalar { (feet_wts.y - head_wts.y) / 2.0f };
+            head_wts.x -= (length_scalar * 0.42f);
+            head_wts.y -= (length_scalar * 0.3f);
+        }
 
         ImFont* font = ImGui::GetFont();
+        float font_size = std::clamp(24.0f - dist / 100.0f, 6.0f, 24.0f);
 
         ImGui::GetBackgroundDrawList()->AddText(
             font,
-            (24.0 - dist / 100.0),
+            font_size,
             head_wts,
             IM_COL32(0,255,255,255),
-            player->get_name()
+            e->get_name()
             );
     }
 
     void run() {
-        for (auto* entity: Globals::entity_system->get_players()) {
+        for (auto& entity: Globals::entity_system->get_entities()) {
             if (entity == nullptr) { continue; }
 
-            auto* pawn { Globals::entity_system->get_pawn(entity) };
-            if (pawn->get_health() > 100 || pawn->get_health() <= 0) {
-                continue;
+            if (entity->get_type() == Entities::EntityType::PLAYER) {
+                auto* pawn { Globals::entity_system->get_pawn(entity->get_entity<Entities::CPlayerController>()) };
+
+                if (pawn->get_health() > 100 || pawn->get_health() <= 0) {
+                    continue;
+                }
+
+                if (Toggles::Esp::skeletons) {
+                    skeletons(pawn);
+                }
+                if (Toggles::Esp::health) {
+                    health_bars(pawn);
+                }
             }
 
-            if (Toggles::Esp::skeletons) {
-                skeletons(pawn);
-            }
-            if (Toggles::Esp::health) {
-                health_bars(pawn);
-            }
             if (Toggles::Esp::boxes) {
-                boxes(pawn);
+                boxes(entity);
             }
             if (Toggles::Esp::names) {
                 names(entity);
