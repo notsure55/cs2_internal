@@ -21,7 +21,7 @@ namespace Esp {
         size_t i {0};
         for (const auto bone: bones) {
             ImVec2 screen_coords {};
-            if (!Math::wts(bone, screen_coords)) {
+            if (!Math::wts(bone, screen_coords, nullptr)) {
                 continue;
             }
 
@@ -45,10 +45,10 @@ namespace Esp {
         for (size_t i{0}; i < bones.size() - 1; ++i) {
             ImVec2 bone_1 {};
             ImVec2 bone_2 {};
-            if (!Math::wts(bones[i], bone_1)) {
+            if (!Math::wts(bones[i], bone_1, nullptr)) {
                 continue;
             }
-            if (!Math::wts(bones[i + 1], bone_2)) {
+            if (!Math::wts(bones[i + 1], bone_2, nullptr)) {
                 continue;
             }
 
@@ -66,10 +66,10 @@ namespace Esp {
         ImVec2 head_wts {};
         ImVec2 feet_wts {};
 
-        if (!Math::wts(pos.first, head_wts)) {
+        if (!Math::wts(pos.first, head_wts, nullptr)) {
             return;
         }
-        if (!Math::wts(pos.second, feet_wts)) {
+        if (!Math::wts(pos.second, feet_wts, nullptr)) {
             return;
         }
 
@@ -96,10 +96,10 @@ namespace Esp {
         ImVec2 head_wts {};
         ImVec2 feet_wts {};
 
-        if (!Math::wts(pos.first, head_wts)) {
+        if (!Math::wts(pos.first, head_wts, nullptr)) {
             return;
         }
-        if (!Math::wts(pos.second, feet_wts)) {
+        if (!Math::wts(pos.second, feet_wts, nullptr)) {
             return;
         }
 
@@ -121,45 +121,58 @@ namespace Esp {
 
     void names(std::unique_ptr<Entities::Entity>& e) {
         const auto pos { e->get_pos() };
-        const auto local_player_pos { Globals::entity_system->get_pawn(Globals::local_player)->get_pos().first };
-        const float dist { calc_dist(local_player_pos, pos.first)};
-        //std::println("LOCAL_PLAYER_POS: X: {} Y: {} Z: {}", local_player_pos->x, local_player_pos->y, local_player_pos->z);
 
-        ImVec2 head_wts {};
         ImVec2 feet_wts {};
 
-        if (!Math::wts(pos.first, head_wts)) {
+        if (!Math::wts(pos.second, feet_wts, nullptr)) {
             return;
-        }
-        if (!Math::wts(pos.second, feet_wts)) {
-            return;
-        }
-        if (e->get_type() == Entities::EntityType::PLAYER) {
-            const auto length_scalar { (feet_wts.y - head_wts.y) / 2.0f };
-            head_wts.x -= (length_scalar * 0.42f);
-            head_wts.y -= (length_scalar * 0.3f);
         }
 
         ImFont* font = ImGui::GetFont();
-        float font_size = std::clamp(24.0f - dist / 100.0f, 6.0f, 24.0f);
 
         ImGui::GetBackgroundDrawList()->AddText(
             font,
-            font_size,
-            head_wts,
+            12.0f,
+            feet_wts,
             IM_COL32(0,255,255,255),
             e->get_name()
             );
     }
 
+    void fov() {
+        const auto screen_size = Menu::get_screen_size();
+        static ImVec2 center = {
+            screen_size.x * 0.5f,
+            screen_size.y * 0.5f
+        };
+        ImGui::GetBackgroundDrawList()->AddCircle(
+            center,
+            Toggles::Aimbot::fov,
+            IM_COL32(0, 128, 128, 255)
+            );
+    }
+
     void run() {
+        if (Toggles::Aimbot::in_fov) {
+            fov();
+        }
+
         for (auto& entity: Globals::entity_system->get_entities()) {
             if (entity == nullptr) { continue; }
+            auto type = entity->get_type();
 
-            if (entity->get_type() == Entities::EntityType::PLAYER) {
+            if (!Toggles::Esp::players && type == Entities::EntityType::PLAYER) {
+                continue;
+            }
+            else if (!Toggles::Esp::weapons && type == Entities::EntityType::WEAPON) {
+                continue;
+            }
+
+            if (type == Entities::EntityType::PLAYER) {
                 auto* pawn { Globals::entity_system->get_pawn(entity->get_entity<Entities::CPlayerController>()) };
+                const auto health = pawn->get_health();
 
-                if (pawn->get_health() > 100 || pawn->get_health() <= 0) {
+                if (health > 100 || health <= 0) {
                     continue;
                 }
 
@@ -170,7 +183,6 @@ namespace Esp {
                     health_bars(pawn);
                 }
             }
-
             if (Toggles::Esp::boxes) {
                 boxes(entity);
             }

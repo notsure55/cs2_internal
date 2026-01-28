@@ -27,11 +27,11 @@ DWORD WINAPI entry_point(LPVOID hModule) {
             Aimbot::run();
         }
 
-        for (const auto& entity: Globals::entity_system->get_entities()) {
+        /*for (const auto& entity: Globals::entity_system->get_entities()) {
             auto e = entity->get_entity<void>();
             const auto name { Utility::get_class_name(e) };
             std::println("{:X} NAME = {}", cast_ptr(e), name);
-        }
+        }*/
 
         Sleep(5);
     }

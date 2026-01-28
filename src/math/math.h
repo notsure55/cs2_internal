@@ -38,6 +38,6 @@ namespace Math {
         }
     };
 
-    const ImVec2* calculate_angle(const Vec3* origin, const Vec3* target);
-    bool wts(const Vec3* in, ImVec2& out);
+    const ImVec2 calculate_angle(const Vec3* origin, const Vec3* target);
+    bool wts(const Vec3* in, ImVec2& out, float* outz);
 }

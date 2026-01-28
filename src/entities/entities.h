@@ -24,6 +24,7 @@ namespace Entities {
         }
 
     };
+
     enum EntityType {
         PLAYER,
         WEAPON,

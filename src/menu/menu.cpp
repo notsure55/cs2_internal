@@ -16,9 +16,13 @@ namespace Menu {
                 ImGui::Checkbox("Skeletons", &Toggles::Esp::skeletons);
                 ImGui::Checkbox("Health", &Toggles::Esp::health);
                 ImGui::Checkbox("Names", &Toggles::Esp::names);
+                ImGui::Checkbox("Players" , &Toggles::Esp::players);
+                ImGui::Checkbox("Weapons" , &Toggles::Esp::weapons);
                 ImGui::EndTabItem();
             }
             if (ImGui::BeginTabItem("Aimbot")) {
+                ImGui::Checkbox("FOV", &Toggles::Aimbot::in_fov);
+                ImGui::SliderFloat("Slider", &Toggles::Aimbot::fov, 0.0f, 180.f);
                 ImGui::EndTabItem();
             }
             ImGui::EndTabBar();
