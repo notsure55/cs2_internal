@@ -4,10 +4,16 @@
 
 namespace Toggles {
     namespace Esp {
-        extern bool boxes;
-        extern bool skeletons;
-        extern bool health;
-        extern bool names;
+        namespace Players {
+            extern bool boxes;
+            extern bool skeletons;
+            extern bool health;
+            extern bool names;
+        }
+        namespace Weapons {
+            extern bool boxes;
+            extern bool names;
+        }
         extern bool players;
         extern bool weapons;
     }

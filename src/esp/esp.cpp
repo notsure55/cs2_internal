@@ -168,7 +168,8 @@ namespace Esp {
                 continue;
             }
 
-            if (type == Entities::EntityType::PLAYER) {
+            switch (type) {
+            case Entities::EntityType::PLAYER: {
                 auto* pawn { Globals::entity_system->get_pawn(entity->get_entity<Entities::CPlayerController>()) };
                 const auto health = pawn->get_health();
 
@@ -176,18 +177,31 @@ namespace Esp {
                     continue;
                 }
 
-                if (Toggles::Esp::skeletons) {
+                if (Toggles::Esp::Players::skeletons) {
                     skeletons(pawn);
                 }
-                if (Toggles::Esp::health) {
+                if (Toggles::Esp::Players::health) {
                     health_bars(pawn);
                 }
+                if (Toggles::Esp::Players::boxes) {
+                    boxes(entity);
+                }
+                if (Toggles::Esp::Players::names) {
+                    names(entity);
+                }
+                break;
             }
-            if (Toggles::Esp::boxes) {
-                boxes(entity);
+            case Entities::EntityType::WEAPON: {
+                if (Toggles::Esp::Weapons::boxes) {
+                    boxes(entity);
+                }
+                if (Toggles::Esp::Weapons::names) {
+                    names(entity);
+                }
+                break;
             }
-            if (Toggles::Esp::names) {
-                names(entity);
+            default:
+                break;
             }
         }
     }

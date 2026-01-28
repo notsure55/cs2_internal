@@ -9,78 +9,50 @@
 #include <offsets/skeletons.h>
 
 namespace Entities {
-    class CPlayerController;
-    class CWeapon {
-    public:
-        char* get_name() {
-            return { *reinterpret_cast<char**>(*reinterpret_cast<uintptr_t*>(cast_ptr(this) + 0x10) + 0x20) };
-        }
-    };
-    class CBaseEntity {
-    public:
-        std::pair<Math::Vec3*, Math::Vec3*> get_pos() {
-            auto pos = reinterpret_cast<Math::Vec3*>(*reinterpret_cast<uintptr_t*>(cast_ptr(this) + Offsets::Client::C_BaseEntity::m_CBodyComponent) + 0x90);
-            return { pos, pos };
-        }
-
-    };
-
     enum EntityType {
         PLAYER,
         WEAPON,
         BASIC,
     };
 
+    class CWeapon {
+    public:
+        char* get_name();
+    };
+
+    class CBaseEntity {
+    public:
+        std::pair<Math::Vec3*, Math::Vec3*> get_pos();
+    };
+
     class Entity {
     private:
-        // const const, because this is a points to const memory and cant be reassigned.
         CBaseEntity* entity;
         const EntityType type;
 
     public:
-        Entity(CBaseEntity* e, const EntityType t) : entity(e), type(t) {}
-
+        Entity(CBaseEntity* e, EntityType t);
         template <typename T>
         T* get_entity() const {
             return reinterpret_cast<T*>(entity);
         }
-
-        const EntityType& get_type() const {
-            return type;
-        }
-
-        std::pair<Math::Vec3*, Math::Vec3*> get_pos();
-
-        char* get_name();
+        const EntityType& get_type() const;
+        std::pair<Math::Vec3*, Math::Vec3*> get_pos() const;
+        char* get_name() const;
     };
 
     // CBasePlayerController
     class CPlayerController {
     public:
-        char* get_name() {
-            return reinterpret_cast<char*>(cast_ptr(this) + Offsets::Client::CBasePlayerController::m_iszPlayerName);
-        }
+        char* get_name() const;
     };
 
     class CPlayerPawn {
     public:
-        std::pair<Math::Vec3*, Math::Vec3*> get_pos() {
-            return { reinterpret_cast<Math::Vec3*>(cast_ptr(this) + Offsets::Client::C_CSPlayerPawn::m_vecLastClipCameraPos), reinterpret_cast<Math::Vec3*>(cast_ptr(this) + Offsets::Client::C_BasePlayerPawn::m_vOldOrigin) };
-        }
-
-        int get_health() {
-            return *reinterpret_cast<int*>(cast_ptr(this) + Offsets::Client::C_BaseEntity::m_iHealth);
-        }
-
-        const uintptr_t get_skeleton() {
-            const auto game_scene { *reinterpret_cast<uintptr_t*>(cast_ptr(this) + 0x38) };
-            const auto skeletons { *reinterpret_cast<uintptr_t*>(game_scene + 0x290) };
-            return skeletons;
-        }
-
-        Math::Vec3* get_bone(Skeletons::CT::BONES bone) {
-            return reinterpret_cast<Math::Vec3*>(this->get_skeleton() + bone * 0x20);
-        }
+        std::pair<Math::Vec3*, Math::Vec3*> get_pos() const;
+        int get_health() const;
+        const uintptr_t get_skeleton() const;
+        Math::Vec3* get_bone(Skeletons::CT::BONES bone) const;
     };
 
     class CGameEntitySystem {

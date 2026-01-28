@@ -6,18 +6,40 @@
 #include <hooks/hooks.h>
 #include <esp/esp.h>
 #include <toggles/toggles.h>
+#include <iostream>
 
 namespace Menu {
+    const char* esp_combo[] = { "Players", "Weapons" };
+    static const char* current_selection = "Players";
+
     void menu() {
         ImGui::Begin("Black");
         if (ImGui::BeginTabBar("Modules")) {
             if (ImGui::BeginTabItem("Esp")) {
-                ImGui::Checkbox("Boxes", &Toggles::Esp::boxes);
-                ImGui::Checkbox("Skeletons", &Toggles::Esp::skeletons);
-                ImGui::Checkbox("Health", &Toggles::Esp::health);
-                ImGui::Checkbox("Names", &Toggles::Esp::names);
-                ImGui::Checkbox("Players" , &Toggles::Esp::players);
-                ImGui::Checkbox("Weapons" , &Toggles::Esp::weapons);
+                if (ImGui::BeginCombo("##combo", current_selection)) {
+                    for (int n = 0; n < IM_ARRAYSIZE(esp_combo); n++) {
+                        bool is_selected = (current_selection == esp_combo[n]);
+                        if (ImGui::Selectable(esp_combo[n], is_selected)) {
+                            current_selection = esp_combo[n];
+                        }
+                        if (is_selected) {
+                            ImGui::SetItemDefaultFocus(); // Set initial focus
+                        }
+                    }
+                    ImGui::EndCombo();
+                }
+                if (std::strcmp(current_selection, "Players") == 0) {
+                    ImGui::Checkbox("Toggle" , &Toggles::Esp::players);
+                    ImGui::Checkbox("Boxes", &Toggles::Esp::Players::boxes);
+                    ImGui::Checkbox("Names", &Toggles::Esp::Players::names);
+                    ImGui::Checkbox("Skeletons", &Toggles::Esp::Players::skeletons);
+                    ImGui::Checkbox("Health", &Toggles::Esp::Players::health);
+                } else {
+                    ImGui::Checkbox("Toggle" , &Toggles::Esp::weapons);
+                    ImGui::Checkbox("Boxes", &Toggles::Esp::Weapons::boxes);
+                    ImGui::Checkbox("Names", &Toggles::Esp::Weapons::names);
+                }
+
                 ImGui::EndTabItem();
             }
             if (ImGui::BeginTabItem("Aimbot")) {
