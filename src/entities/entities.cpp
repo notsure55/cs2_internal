@@ -45,7 +45,7 @@ namespace Entities {
             const auto type = find_type(name);
 
             if (type == EntityType::BASIC) {
-                //std::println("address: {:X} {}", cast_ptr(e), name);
+                std::println("address: {:X} {}", cast_ptr(e), name);
                 continue;
             }
 

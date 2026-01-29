@@ -60,6 +60,44 @@ namespace Esp {
         }
     }
 
+    void c4() {
+        const auto c4_weapon { **reinterpret_cast<Entities::CWeapon***>(Globals::client + Offsets::Client::dwWeaponC4) };
+
+        if (!c4_weapon) {
+            return;
+        }
+
+        if (*reinterpret_cast<bool*>(cast_ptr(c4_weapon) + 0x1FB8)) {
+            const auto c4_planted { **reinterpret_cast<uintptr_t**>(Globals::client + Offsets::Client::dwPlantedC4) };
+
+            // render c4 time and defuser and stuff
+        }
+
+        // point
+        const auto pos { c4_weapon->get_pos() };
+        ImVec2 pos1 {};
+        if (!Math::wts(pos.first, pos1, nullptr)) {
+            return;
+        }
+        ImGui::GetBackgroundDrawList()->AddRect(
+            pos1,
+            pos1,
+            IM_COL32(0, 128, 128, 255)
+            );
+
+        // names
+        ImFont* font = ImGui::GetFont();
+
+        ImGui::GetBackgroundDrawList()->AddText(
+            font,
+            12.0f,
+            pos1,
+            IM_COL32(0,255,255,255),
+            c4_weapon->get_name()
+            );
+
+    }
+
     void boxes(std::unique_ptr<Entities::Entity>& e) {
         const auto pos { e->get_pos() }; // head and feet :P
 
@@ -204,5 +242,7 @@ namespace Esp {
                 break;
             }
         }
+        // C4
+        c4();
     }
 }

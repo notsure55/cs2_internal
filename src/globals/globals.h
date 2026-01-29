@@ -18,6 +18,7 @@ namespace Globals {
     extern Math::Matrix* view_matrix;
     extern Entities::CPlayerController* local_player;
     extern ImVec2* view_angles;
+    extern uintptr_t client;
 
     void setup();
 }

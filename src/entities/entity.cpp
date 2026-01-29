@@ -6,6 +6,7 @@ namespace Entities {
     const EntityType& Entity::get_type() const {
         return type;
     }
+
     std::pair<Math::Vec3*, Math::Vec3*> Entity::get_pos() const {
         switch (this->get_type()) {
         case EntityType::PLAYER:

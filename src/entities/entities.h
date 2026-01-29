@@ -18,6 +18,7 @@ namespace Entities {
     class CWeapon {
     public:
         char* get_name();
+        std::pair<Math::Vec3*, Math::Vec3*> get_pos();
     };
 
     class CBaseEntity {

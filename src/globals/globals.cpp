@@ -9,13 +9,14 @@ namespace Globals {
     Math::Matrix* view_matrix { nullptr };
     SigManager* mgr { nullptr };
     ImVec2* view_angles { nullptr };
+    uintptr_t client { NULL };
 
     void setup() {
         mgr = new SigManager;
         mgr->init(Globals::sigs);
         Entities::init(mgr);
         inventory_mgr = Inventory::init(mgr);
-        const auto client { cast_ptr(GetModuleHandleW(L"client.dll")) };
+        client = cast_ptr(GetModuleHandleW(L"client.dll"));
         entity_system = mgr->get_class<Entities::CGameEntitySystem>("CGameEntitySystem");
         local_player = reinterpret_cast<Entities::CPlayerController*>(entity_system->get_entity(1));
         view_matrix = reinterpret_cast<Math::Matrix*>(client + Offsets::Client::dwViewMatrix);

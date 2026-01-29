@@ -2,9 +2,24 @@
 
 namespace Offsets {
     namespace Client {
-        constexpr std::ptrdiff_t dwViewMatrix = 0x1E323D0;
-        constexpr std::ptrdiff_t dwViewAngles = 0x1E3C800;
+        constexpr std::ptrdiff_t dwCSGOInput = 0x1E3C150;
+        constexpr std::ptrdiff_t dwEntityList = 0x1D13CE8;
+        constexpr std::ptrdiff_t dwGameEntitySystem = 0x1FB89D0;
         constexpr std::ptrdiff_t dwGameEntitySystem_highestEntityIndex = 0x20F0;
+        constexpr std::ptrdiff_t dwGameRules = 0x1E31410;
+        constexpr std::ptrdiff_t dwGlobalVars = 0x1BE41C0;
+        constexpr std::ptrdiff_t dwGlowManager = 0x1E2E2B8;
+        constexpr std::ptrdiff_t dwLocalPlayerController = 0x1E1DC18;
+        constexpr std::ptrdiff_t dwLocalPlayerPawn = 0x1BEEF28;
+        constexpr std::ptrdiff_t dwPlantedC4 = 0x1E36BE8;
+        constexpr std::ptrdiff_t dwPrediction = 0x1BEEE40;
+        constexpr std::ptrdiff_t dwSensitivity = 0x1E2ED08;
+        constexpr std::ptrdiff_t dwSensitivity_sensitivity = 0x50;
+        constexpr std::ptrdiff_t dwViewAngles = 0x1E3C800;
+        constexpr std::ptrdiff_t dwViewMatrix = 0x1E323D0;
+        constexpr std::ptrdiff_t dwViewRender = 0x1E32F48;
+        constexpr std::ptrdiff_t dwWeaponC4 = 0x1DCF190;
+
         namespace CBasePlayerController {
             constexpr std::ptrdiff_t m_CommandContext = 0x600; // C_CommandContext
             constexpr std::ptrdiff_t m_nInButtonsWhichAreToggles = 0x6A8; // uint64
@@ -269,6 +284,50 @@ namespace Offsets {
             constexpr std::ptrdiff_t m_hController = 0x15B8; // CHandle<CBasePlayerController>
             constexpr std::ptrdiff_t m_hDefaultController = 0x15BC; // CHandle<CBasePlayerController>
             constexpr std::ptrdiff_t m_bIsSwappingToPredictableController = 0x15C0; // bool
+        }
+
+        namespace C_PlantedC4 {
+            constexpr std::ptrdiff_t m_bBombTicking = 0x1160; // bool
+            constexpr std::ptrdiff_t m_nBombSite = 0x1164; // int32
+            constexpr std::ptrdiff_t m_nSourceSoundscapeHash = 0x1168; // int32
+            constexpr std::ptrdiff_t m_entitySpottedState = 0x1170; // EntitySpottedState_t
+            constexpr std::ptrdiff_t m_flNextGlow = 0x1188; // GameTime_t
+            constexpr std::ptrdiff_t m_flNextBeep = 0x118C; // GameTime_t
+            constexpr std::ptrdiff_t m_flC4Blow = 0x1190; // GameTime_t
+            constexpr std::ptrdiff_t m_bCannotBeDefused = 0x1194; // bool
+            constexpr std::ptrdiff_t m_bHasExploded = 0x1195; // bool
+            constexpr std::ptrdiff_t m_flTimerLength = 0x1198; // float32
+            constexpr std::ptrdiff_t m_bBeingDefused = 0x119C; // bool
+            constexpr std::ptrdiff_t m_bTriggerWarning = 0x11A0; // float32
+            constexpr std::ptrdiff_t m_bExplodeWarning = 0x11A4; // float32
+            constexpr std::ptrdiff_t m_bC4Activated = 0x11A8; // bool
+            constexpr std::ptrdiff_t m_bTenSecWarning = 0x11A9; // bool
+            constexpr std::ptrdiff_t m_flDefuseLength = 0x11AC; // float32
+            constexpr std::ptrdiff_t m_flDefuseCountDown = 0x11B0; // GameTime_t
+            constexpr std::ptrdiff_t m_bBombDefused = 0x11B4; // bool
+            constexpr std::ptrdiff_t m_hBombDefuser = 0x11B8; // CHandle<C_CSPlayerPawn>
+            constexpr std::ptrdiff_t m_AttributeManager = 0x11C0; // C_AttributeContainer
+            constexpr std::ptrdiff_t m_hDefuserMultimeter = 0x1698; // CHandle<C_Multimeter>
+            constexpr std::ptrdiff_t m_flNextRadarFlashTime = 0x169C; // GameTime_t
+            constexpr std::ptrdiff_t m_bRadarFlash = 0x16A0; // bool
+            constexpr std::ptrdiff_t m_pBombDefuser = 0x16A4; // CHandle<C_CSPlayerPawn>
+            constexpr std::ptrdiff_t m_fLastDefuseTime = 0x16A8; // GameTime_t
+            constexpr std::ptrdiff_t m_pPredictionOwner = 0x16B0; // CBasePlayerController*
+            constexpr std::ptrdiff_t m_vecC4ExplodeSpectatePos = 0x16B8; // Vector
+            constexpr std::ptrdiff_t m_vecC4ExplodeSpectateAng = 0x16C4; // QAngle
+            constexpr std::ptrdiff_t m_flC4ExplodeSpectateDuration = 0x16D0; // float32
+        }
+        namespace C_C4 {
+            constexpr std::ptrdiff_t m_activeLightParticleIndex = 0x1F80; // ParticleIndex_t
+            constexpr std::ptrdiff_t m_eActiveLightEffect = 0x1F84; // C4LightEffect_t
+            constexpr std::ptrdiff_t m_bStartedArming = 0x1F88; // bool
+            constexpr std::ptrdiff_t m_fArmedTime = 0x1F8C; // GameTime_t
+            constexpr std::ptrdiff_t m_bBombPlacedAnimation = 0x1F90; // bool
+            constexpr std::ptrdiff_t m_bIsPlantingViaUse = 0x1F91; // bool
+            constexpr std::ptrdiff_t m_entitySpottedState = 0x1F98; // EntitySpottedState_t
+            constexpr std::ptrdiff_t m_nSpotRules = 0x1FB0; // int32
+            constexpr std::ptrdiff_t m_bPlayedArmingBeeps = 0x1FB4; // bool[7]
+            constexpr std::ptrdiff_t m_bBombPlanted = 0x1FBB; // bool
         }
     }
 }
